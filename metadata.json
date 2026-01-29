@@ -1,0 +1,5 @@
+{
+  "name": "DNE Digital Student ID",
+  "description": "A fully functional replica of the Digital Student ID application with authentication, dynamic card generation, flip animations, and certificate validation.",
+  "requestFramePermissions": []
+}
