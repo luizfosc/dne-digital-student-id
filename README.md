@@ -120,3 +120,4 @@ Para mais detalhes, veja [SUPABASE_SETUP.md](./SUPABASE_SETUP.md).
 ## Licença
 
 Este projeto é privado e de uso interno.
+# Deploy test
