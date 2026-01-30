@@ -12,7 +12,7 @@ export interface Student {
   validity: string; // Fixed date
 }
 
-export type Screen = 'splash' | 'register' | 'card' | 'validation' | 'certificate' | 'profile' | 'movies';
+export type Screen = 'splash' | 'register' | 'card' | 'validation' | 'certificate' | 'profile' | 'movies' | 'design-system';
 
 export const COURSES = [
   'Administração de Empresas',

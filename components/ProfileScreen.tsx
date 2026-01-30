@@ -1,14 +1,15 @@
 import React from 'react';
 import { Student } from '../types';
-import { ChevronRight, Download, FileText, HelpCircle, User, Bell, Trash2, LogOut } from 'lucide-react';
+import { ChevronRight, Download, FileText, HelpCircle, User, Bell, Trash2, LogOut, Palette } from 'lucide-react';
 
 interface ProfileScreenProps {
   student: Student;
   onEdit: () => void;
   onLogout: () => void;
+  onNavigateDesignSystem: () => void;
 }
 
-export const ProfileScreen: React.FC<ProfileScreenProps> = ({ student, onEdit, onLogout }) => {
+export const ProfileScreen: React.FC<ProfileScreenProps> = ({ student, onEdit, onLogout, onNavigateDesignSystem }) => {
   const firstName = student.name.split(' ')[0];
 
   const handleGeneratePDF = () => {
@@ -46,6 +47,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ student, onEdit, o
         <MenuItem icon={FileText} label="Termos de uso" />
         <MenuItem icon={FileText} label="Fale conosco" />
         <MenuItem icon={Download} label="Gerar o PDF da Carteira" onClick={handleGeneratePDF} />
+        <MenuItem icon={Palette} label="Design System" onClick={onNavigateDesignSystem} />
       </div>
 
       <div className="mb-6">

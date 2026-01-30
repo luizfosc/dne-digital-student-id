@@ -7,6 +7,7 @@ import { CardScreen } from './components/CardScreen';
 import { ValidationScreen } from './components/ValidationScreen';
 import { CertificateScreen } from './components/CertificateScreen';
 import { ProfileScreen } from './components/ProfileScreen';
+import { DesignSystemScreen } from './components/DesignSystemScreen';
 import { BottomNav } from './components/BottomNav';
 import { findStudentByCpf, createStudent, updateStudent } from './src/services/studentService';
 
@@ -144,7 +145,16 @@ export default function App() {
       case 'certificate':
         return currentUser ? <CertificateScreen student={currentUser} onBack={goBack} /> : null;
       case 'profile':
-        return currentUser ? <ProfileScreen student={currentUser} onEdit={() => navigateTo('register')} onLogout={handleLogout} /> : null;
+        return currentUser ? (
+          <ProfileScreen
+            student={currentUser}
+            onEdit={() => navigateTo('register')}
+            onLogout={handleLogout}
+            onNavigateDesignSystem={() => navigateTo('design-system')}
+          />
+        ) : null;
+      case 'design-system':
+        return <DesignSystemScreen onBack={goBack} />;
       case 'movies':
         return (
           <div className="flex flex-col items-center justify-center h-full bg-white">
