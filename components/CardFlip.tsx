@@ -23,11 +23,20 @@ export const CardFlip: React.FC<CardFlipProps> = ({ student, isFlipped, onFlip }
                     onClick={onFlip}
                 >
                     <div
-                        className={`relative w-full h-full transition-transform duration-700 transform-style-3d ${isFlipped ? 'rotate-x-180' : ''
-                            }`}
+                        className={`relative w-full h-full transition-transform duration-700 ${isFlipped ? 'rotate-x-180' : ''}`}
+                        style={{
+                            transformStyle: 'preserve-3d',
+                            WebkitTransformStyle: 'preserve-3d'
+                        }}
                     >
                         {/* FRONT SIDE - Original code-based design */}
-                        <div className="absolute inset-0 w-full h-full backface-hidden shadow-2xl rounded-2xl overflow-hidden bg-[#e0f2fe] border border-slate-200">
+                        <div
+                            className="absolute inset-0 w-full h-full shadow-2xl rounded-2xl overflow-hidden bg-[#e0f2fe] border border-slate-200"
+                            style={{
+                                backfaceVisibility: 'hidden',
+                                WebkitBackfaceVisibility: 'hidden'
+                            }}
+                        >
                             {/* Header */}
                             <div className="absolute top-0 left-0 w-full h-[18%] bg-[#67d4fc] flex items-center justify-between px-5 z-20">
                                 {/* DNE Logo - Left */}
@@ -102,7 +111,13 @@ export const CardFlip: React.FC<CardFlipProps> = ({ student, isFlipped, onFlip }
                         </div>
 
                         {/* BACK SIDE - SVG Template */}
-                        <div className="absolute inset-0 w-full h-full backface-hidden rotate-x-180 shadow-2xl rounded-2xl overflow-hidden">
+                        <div
+                            className="absolute inset-0 w-full h-full rotate-x-180 shadow-2xl rounded-2xl overflow-hidden"
+                            style={{
+                                backfaceVisibility: 'hidden',
+                                WebkitBackfaceVisibility: 'hidden'
+                            }}
+                        >
                             <img
                                 src="/logos/ueb-logo.svg"
                                 alt="Verso da Carteirinha"
