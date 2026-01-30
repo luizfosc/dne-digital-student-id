@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { Loader2 } from 'lucide-react';
 
 interface AuthModalProps {
   onSubmit: (cpf: string) => void;
+  isLoading?: boolean;
+  error?: string | null;
 }
 
-export const AuthModal: React.FC<AuthModalProps> = ({ onSubmit }) => {
+export const AuthModal: React.FC<AuthModalProps> = ({ onSubmit, isLoading = false, error = null }) => {
   const [cpf, setCpf] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -39,22 +42,36 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onSubmit }) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">CPF</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               value={cpf}
               onChange={handleCpfChange}
               placeholder="000.000.000-00"
               className="w-full border border-gray-300 rounded-xl px-4 py-3 text-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white text-gray-900 placeholder-gray-400"
               required
+              disabled={isLoading}
             />
           </div>
-          
-          <button 
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
+
+          <button
             type="submit"
-            disabled={cpf.length < 14}
-            className="w-full bg-blue-500 hover:bg-blue-600 disabled:opacity-50 text-white font-bold py-4 rounded-xl text-lg transition-colors"
+            disabled={cpf.length < 14 || isLoading}
+            className="w-full bg-blue-500 hover:bg-blue-600 disabled:opacity-50 text-white font-bold py-4 rounded-xl text-lg transition-colors flex items-center justify-center space-x-2"
           >
-            Continuar
+            {isLoading ? (
+              <>
+                <Loader2 className="animate-spin" size={20} />
+                <span>Verificando...</span>
+              </>
+            ) : (
+              <span>Continuar</span>
+            )}
           </button>
         </form>
       </div>

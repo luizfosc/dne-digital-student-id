@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Student } from '../types';
 import { RefreshCw, Hand } from 'lucide-react';
-import { DynamicStudentCard } from './DynamicStudentCard';
+import { CardFlip } from './CardFlip';
 
 interface CardScreenProps {
   student: Student;
@@ -39,37 +39,9 @@ export const CardScreen: React.FC<CardScreenProps> = ({ student }) => {
           </button>
         </div>
 
-        {/* Card Container - ROTATED 90 DEGREES (LANDSCAPE) */}
+        {/* Card Container - CardFlip handles rotation internally */}
         <div className="flex-1 flex items-center justify-center w-full">
-          <div
-            className="perspective-1000 cursor-pointer"
-            style={{
-              width: 'min(68vh, 135vw)',
-              maxWidth: 'none',
-              aspectRatio: '1.586',
-            }}
-            onClick={() => setIsFlipped(!isFlipped)}
-          >
-            {/* Inner Card (Transform wrapper) - ROTATED 90 DEGREES */}
-            <div
-              className={`relative w-full h-full transition-transform duration-700 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}
-              style={{
-                transform: 'rotate(-90deg)',
-              }}
-            >
-
-              {/* --- FRONT FACE --- */}
-              <div className="absolute w-full h-full backface-hidden rounded-xl overflow-hidden shadow-2xl">
-                <DynamicStudentCard student={student} side="front" />
-              </div>
-
-              {/* --- BACK FACE --- */}
-              <div className="absolute w-full h-full backface-hidden rotate-y-180 rounded-xl overflow-hidden shadow-2xl">
-                <DynamicStudentCard student={student} side="back" />
-              </div>
-
-            </div>
-          </div>
+          <CardFlip student={student} isFlipped={isFlipped} onFlip={() => setIsFlipped(!isFlipped)} />
         </div>
       </div>
     </div>

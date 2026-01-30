@@ -13,11 +13,12 @@ export const ValidationScreen: React.FC<ValidationScreenProps> = ({ student, onV
       
       {/* Header */}
       <div className="flex justify-between items-start mb-6">
-        <div className="flex items-center space-x-2 opacity-80">
-          <div className="text-3xl font-black text-white tracking-widest">DNE</div>
-          <div className="text-[10px] text-white font-bold leading-tight border-l border-white pl-2">
-            Carteira<br/>Nacional do<br/>Estudante
-          </div>
+        <div className="flex items-center space-x-3">
+          <img
+            src="https://www.documentodoestudante.com.br/lp/assets/img/logo-dne-branco.webp"
+            alt="DNE - Carteira Nacional do Estudante"
+            className="h-12 w-auto"
+          />
         </div>
         {/* UEB Logo Mock */}
         <div className="w-10 h-10 bg-blue-900 rounded-full border border-white flex items-center justify-center">

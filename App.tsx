@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Screen, Student, INSTITUTION, LEVEL, VALIDITY_DATE } from './types';
+import { Screen, Student } from './types';
 import { SplashContent } from './components/SplashContent';
 import { AuthModal } from './components/AuthModal';
 import { RegistrationScreen } from './components/RegistrationScreen';
@@ -8,39 +8,21 @@ import { ValidationScreen } from './components/ValidationScreen';
 import { CertificateScreen } from './components/CertificateScreen';
 import { ProfileScreen } from './components/ProfileScreen';
 import { BottomNav } from './components/BottomNav';
-import { ArrowLeft } from 'lucide-react';
+import { findStudentByCpf, createStudent, updateStudent } from './src/services/studentService';
 
 export default function App() {
-  // TEST USER - Auto-login for testing
-  const TEST_USER: Student = {
-    name: 'LUIZ FELIPE O S C PAIVA',
-    cpf: '123.456.789-00',
-    rg: 'MG846161',
-    birthDate: '1985-09-03',
-    course: 'Administração de Empresas',
-    photoUrl: '/images/test-photo.png',
-    institution: INSTITUTION,
-    level: LEVEL,
-    matricula: '283132',
-    usageCode: '11LX2NFR',
-    validity: VALIDITY_DATE
-  };
-
-  const [currentScreen, setCurrentScreen] = useState<Screen>('card'); // Start at card screen for testing
+  const [currentScreen, setCurrentScreen] = useState<Screen>('splash');
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [currentUser, setCurrentUser] = useState<Student | null>(TEST_USER); // Auto-login with test user
+  const [currentUser, setCurrentUser] = useState<Student | null>(null);
   const [pendingCpf, setPendingCpf] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Navigation History for simple back behavior
   const [history, setHistory] = useState<Screen[]>([]);
 
-  // Database Mock (In-memory) - Pre-populate with test user
-  const [userDatabase, setUserDatabase] = useState<Record<string, Student>>({
-    [TEST_USER.cpf]: TEST_USER
-  });
-
   useEffect(() => {
-    // Splash screen timer (disabled for testing)
+    // Splash screen timer
     if (currentScreen === 'splash') {
       const timer = setTimeout(() => {
         setShowAuthModal(true);
@@ -49,25 +31,55 @@ export default function App() {
     }
   }, [currentScreen]);
 
-  const handleLogin = (cpf: string) => {
-    // Check if user exists in our "database"
-    if (userDatabase[cpf]) {
-      setCurrentUser(userDatabase[cpf]);
-      setCurrentScreen('card');
-    } else {
-      // User not found, go to registration with pre-filled CPF
-      setPendingCpf(cpf);
-      setCurrentScreen('register');
+  const handleLogin = async (cpf: string) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // Search for student in Supabase
+      const student = await findStudentByCpf(cpf);
+
+      if (student) {
+        // Student found - login
+        setCurrentUser(student);
+        setCurrentScreen('card');
+      } else {
+        // Student not found - go to registration
+        setPendingCpf(cpf);
+        setCurrentScreen('register');
+      }
+      setShowAuthModal(false);
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('Erro ao buscar CPF. Verifique sua conexão.');
+    } finally {
+      setIsLoading(false);
     }
-    setShowAuthModal(false);
   };
 
-  const handleRegister = (studentData: Student) => {
-    // Save to "database"
-    const newDb = { ...userDatabase, [studentData.cpf]: studentData };
-    setUserDatabase(newDb);
-    setCurrentUser(studentData);
-    setCurrentScreen('card');
+  const handleRegister = async (studentData: Student) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // Check if updating existing user or creating new
+      if (currentUser) {
+        // Update existing user
+        const updatedStudent = await updateStudent(studentData.cpf, studentData);
+        setCurrentUser(updatedStudent);
+      } else {
+        // Create new user
+        const newStudent = await createStudent(studentData);
+        setCurrentUser(newStudent);
+      }
+      setCurrentScreen('card');
+    } catch (err) {
+      console.error('Registration error:', err);
+      setError('Erro ao salvar dados. Tente novamente.');
+      throw err; // Propagate error to RegistrationScreen
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const navigateTo = (screen: Screen) => {
@@ -123,7 +135,7 @@ export default function App() {
     <div className="relative w-full h-full max-w-md mx-auto bg-gray-50 overflow-hidden shadow-2xl flex flex-col">
       {/* Auth Modal Overlay */}
       {showAuthModal && (
-        <AuthModal onSubmit={handleLogin} />
+        <AuthModal onSubmit={handleLogin} isLoading={isLoading} error={error} />
       )}
 
       {/* Main Content Area */}
