@@ -10,6 +10,9 @@ import { ProfileScreen } from './components/ProfileScreen';
 import { BottomNav } from './components/BottomNav';
 import { findStudentByCpf, createStudent, updateStudent } from './src/services/studentService';
 
+// LocalStorage key for caching user session
+const USER_STORAGE_KEY = 'dne_current_user';
+
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('splash');
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -20,6 +23,21 @@ export default function App() {
 
   // Navigation History for simple back behavior
   const [history, setHistory] = useState<Screen[]>([]);
+
+  // Check localStorage for cached user on mount
+  useEffect(() => {
+    const cachedUser = localStorage.getItem(USER_STORAGE_KEY);
+    if (cachedUser) {
+      try {
+        const user = JSON.parse(cachedUser) as Student;
+        setCurrentUser(user);
+        setCurrentScreen('card');
+      } catch (err) {
+        console.error('Failed to parse cached user:', err);
+        localStorage.removeItem(USER_STORAGE_KEY);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     // Splash screen timer
@@ -40,8 +58,9 @@ export default function App() {
       const student = await findStudentByCpf(cpf);
 
       if (student) {
-        // Student found - login
+        // Student found - login and cache
         setCurrentUser(student);
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(student));
         setCurrentScreen('card');
       } else {
         // Student not found - go to registration
@@ -67,10 +86,12 @@ export default function App() {
         // Update existing user
         const updatedStudent = await updateStudent(studentData.cpf, studentData);
         setCurrentUser(updatedStudent);
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(updatedStudent));
       } else {
         // Create new user
         const newStudent = await createStudent(studentData);
         setCurrentUser(newStudent);
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newStudent));
       }
       setCurrentScreen('card');
     } catch (err) {
@@ -95,6 +116,13 @@ export default function App() {
     }
   };
 
+  const handleLogout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem(USER_STORAGE_KEY);
+    setCurrentScreen('splash');
+    setShowAuthModal(true);
+  };
+
   // Render Logic
   const renderScreen = () => {
     switch (currentScreen) {
@@ -116,7 +144,7 @@ export default function App() {
       case 'certificate':
         return currentUser ? <CertificateScreen student={currentUser} onBack={goBack} /> : null;
       case 'profile':
-        return currentUser ? <ProfileScreen student={currentUser} onEdit={() => navigateTo('register')} /> : null;
+        return currentUser ? <ProfileScreen student={currentUser} onEdit={() => navigateTo('register')} onLogout={handleLogout} /> : null;
       case 'movies':
         return (
           <div className="flex flex-col items-center justify-center h-full bg-white">

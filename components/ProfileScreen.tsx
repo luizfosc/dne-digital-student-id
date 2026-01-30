@@ -5,9 +5,10 @@ import { ChevronRight, Download, FileText, HelpCircle, User, Bell, Trash2, LogOu
 interface ProfileScreenProps {
   student: Student;
   onEdit: () => void;
+  onLogout: () => void;
 }
 
-export const ProfileScreen: React.FC<ProfileScreenProps> = ({ student, onEdit }) => {
+export const ProfileScreen: React.FC<ProfileScreenProps> = ({ student, onEdit, onLogout }) => {
   const firstName = student.name.split(' ')[0];
 
   const handleGeneratePDF = () => {
@@ -16,7 +17,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ student, onEdit })
   };
 
   const MenuItem: React.FC<{ icon: any, label: string, onClick?: () => void, danger?: boolean }> = ({ icon: Icon, label, onClick, danger }) => (
-    <button 
+    <button
       onClick={onClick}
       className={`w-full bg-gray-50 hover:bg-gray-100 p-4 rounded-xl flex items-center justify-between mb-3 transition-colors ${danger ? 'text-red-500' : 'text-gray-600'}`}
     >
@@ -54,7 +55,10 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ student, onEdit })
         <MenuItem icon={Trash2} label="Apagar minha conta" />
       </div>
 
-      <button className="w-full bg-white border border-red-100 p-4 rounded-xl flex items-center text-red-500 font-bold hover:bg-red-50 transition-colors">
+      <button
+        onClick={onLogout}
+        className="w-full bg-white border border-red-100 p-4 rounded-xl flex items-center text-red-500 font-bold hover:bg-red-50 transition-colors"
+      >
         <LogOut size={20} className="mr-4" />
         Sair
       </button>
