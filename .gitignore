@@ -22,3 +22,23 @@ npm-debug.log*
 # Temporary
 .tmp/
 temp/
+
+# Environment & Secrets (AIOS)
+.env.*.local
+*.key
+*.pem
+
+# Dependencies (AIOS)
+node_modules
+
+# Build & Logs (AIOS)
+build/
+logs/
+
+# IDE & OS (AIOS)
+*.swp
+
+# AIOS Local (AIOS)
+.aios-core/local/
+.claude/settings.local.json
+.aios/install-log.txt

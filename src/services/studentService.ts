@@ -127,13 +127,44 @@ export const updateStudent = async (cpf: string, student: Partial<Student>): Pro
 };
 
 /**
+ * Delete old photo from storage
+ */
+const deleteOldPhoto = async (photoUrl: string): Promise<void> => {
+  try {
+    // Extract file path from public URL
+    const urlParts = photoUrl.split('/student-photos/');
+    if (urlParts.length < 2) return;
+
+    const filePath = urlParts[1].split('?')[0]; // Remove query params if any
+
+    const { error } = await supabase.storage
+      .from('student-photos')
+      .remove([filePath]);
+
+    if (error) {
+      console.warn('Error deleting old photo:', error);
+      // Don't throw - continue with upload even if deletion fails
+    }
+  } catch (error) {
+    console.warn('Error in deleteOldPhoto:', error);
+  }
+};
+
+/**
  * Upload student photo to Supabase Storage
+ * If oldPhotoUrl is provided, deletes the old photo first
  */
 export const uploadStudentPhoto = async (
   cpf: string,
-  file: File
+  file: File,
+  oldPhotoUrl?: string
 ): Promise<string> => {
   try {
+    // Delete old photo if exists
+    if (oldPhotoUrl) {
+      await deleteOldPhoto(oldPhotoUrl);
+    }
+
     const fileExt = file.name.split('.').pop();
     const fileName = `${cpf.replace(/\D/g, '')}_${Date.now()}.${fileExt}`;
     const filePath = `${fileName}`;
@@ -142,7 +173,7 @@ export const uploadStudentPhoto = async (
       .from('student-photos')
       .upload(filePath, file, {
         cacheControl: '3600',
-        upsert: true,
+        upsert: false, // Changed to false since we're using unique timestamps
       });
 
     if (uploadError) throw uploadError;

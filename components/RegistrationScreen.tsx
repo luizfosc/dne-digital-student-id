@@ -180,7 +180,8 @@ export const RegistrationScreen: React.FC<RegistrationScreenProps> = ({ onRegist
       let photoUrl = initialData?.photoUrl || '';
 
       if (photoFile) {
-        photoUrl = await uploadStudentPhoto(formData.cpf, photoFile);
+        // Pass old photo URL so it can be deleted
+        photoUrl = await uploadStudentPhoto(formData.cpf, photoFile, initialData?.photoUrl);
       }
 
       // Generate unique codes if creating new student
