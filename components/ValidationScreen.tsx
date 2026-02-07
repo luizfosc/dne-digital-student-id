@@ -15,14 +15,19 @@ export const ValidationScreen: React.FC<ValidationScreenProps> = ({ student, onV
       <div className="flex justify-between items-start mb-6">
         <div className="flex items-center space-x-3">
           <img
-            src="https://www.documentodoestudante.com.br/lp/assets/img/logo-dne-branco.webp"
+            src="/logos/dne-logo-branco.webp"
             alt="DNE - Carteira Nacional do Estudante"
             className="h-12 w-auto"
+            loading="lazy"
           />
         </div>
-        {/* UEB Logo Mock */}
-        <div className="w-10 h-10 bg-blue-900 rounded-full border border-white flex items-center justify-center">
-            <span className="text-white text-[10px] font-bold">UEB</span>
+        <div className="flex items-center">
+          <img
+            src="/logos/logos-entidades.webp"
+            alt="UEB Logo"
+            className="h-10 w-auto object-contain"
+            loading="lazy"
+          />
         </div>
       </div>
 
@@ -35,10 +40,11 @@ export const ValidationScreen: React.FC<ValidationScreenProps> = ({ student, onV
 
         {/* QR Code Card */}
         <div className="w-1/2 aspect-[3/4] bg-white p-4 rounded-lg shadow-lg rotate-[2deg] flex flex-col items-center justify-center">
-          <img 
-            src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${student.usageCode}`} 
-            alt="QR" 
+          <img
+            src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${student.usageCode}`}
+            alt="QR"
             className="w-full h-auto"
+            loading="lazy"
           />
           <p className="mt-2 font-bold text-gray-800 text-sm">{student.usageCode}</p>
         </div>

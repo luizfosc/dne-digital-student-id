@@ -13,9 +13,12 @@ export const DynamicStudentCard: React.FC<DynamicStudentCardProps> = ({ student,
         return (
             <div className="absolute inset-0 w-full h-full">
                 <img
-                    src="/images/carteirinha-verso-template.jpg"
+                    src="/images/carteirinha-verso-template.webp"
+                    srcSet="/images/carteirinha-verso-template-1x.webp 428w, /images/carteirinha-verso-template.webp 1024w"
+                    sizes="428px"
                     alt="Carteirinha Verso"
                     className="w-full h-full object-cover"
+                    loading="lazy"
                 />
             </div>
         );
@@ -26,7 +29,9 @@ export const DynamicStudentCard: React.FC<DynamicStudentCardProps> = ({ student,
         <div className="absolute inset-0 w-full h-full">
             {/* Imagem de fundo do template */}
             <img
-                src="/images/carteirinha-frente-template.png"
+                src="/images/carteirinha-frente-template.webp"
+                srcSet="/images/carteirinha-frente-template-1x.webp 428w, /images/carteirinha-frente-template.webp 1024w"
+                sizes="428px"
                 alt="Carteirinha Frente"
                 className="absolute inset-0 w-full h-full object-cover"
             />

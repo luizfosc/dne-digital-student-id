@@ -47,23 +47,13 @@ export const CardFlip: React.FC<CardFlipProps> = ({ student, isFlipped, onFlip }
                             }}
                         >
                             {/* Header */}
-                            <div className="absolute top-0 left-0 w-full h-[18%] bg-[#67d4fc] flex items-center justify-between px-5 z-20">
-                                {/* DNE Logo - Left */}
-                                <div className="flex items-center h-full">
-                                    <img
-                                        src="https://www.documentodoestudante.com.br/lp/assets/img/logo-dne-branco.webp"
-                                        alt="DNE Logo"
-                                        className="h-[70%] w-auto object-contain"
-                                    />
-                                </div>
-                                {/* UEB Logo - Right */}
-                                <div className="flex items-center h-full">
-                                    <img
-                                        src="https://uebnacional.org.br/public/uploads/logo.png"
-                                        alt="UEB Logo"
-                                        className="h-[85%] w-auto object-contain"
-                                    />
-                                </div>
+                            <div className="absolute top-0 left-0 w-full h-[18%] bg-[#67d4fc] flex items-center justify-center px-5 z-20">
+                                {/* DNE + UEB Logos */}
+                                <img
+                                    src="/logos/logos-entidades.webp"
+                                    alt="DNE e UEB Logos"
+                                    className="h-[75%] w-auto object-contain"
+                                />
                             </div>
 
                             {/* Right Strip (QR & Year Logo) */}
@@ -73,7 +63,7 @@ export const CardFlip: React.FC<CardFlipProps> = ({ student, isFlipped, onFlip }
                                 </div>
                                 <div className="mb-2 w-full flex items-center justify-center px-1">
                                     <img
-                                        src="/images/2026-logo.png"
+                                        src="/images/2026-logo.webp"
                                         alt="2026"
                                         className="w-full h-auto object-contain"
                                     />
@@ -131,9 +121,12 @@ export const CardFlip: React.FC<CardFlipProps> = ({ student, isFlipped, onFlip }
                             }}
                         >
                             <img
-                                src="/logos/ueb-logo.svg"
+                                src="/images/carteirinha-verso-template.webp"
+                                srcSet="/images/carteirinha-verso-template-1x.webp 428w, /images/carteirinha-verso-template.webp 1024w"
+                                sizes="428px"
                                 alt="Verso da Carteirinha"
                                 className="absolute inset-0 w-full h-full object-fill"
+                                loading="lazy"
                             />
                         </div>
                     </div>
