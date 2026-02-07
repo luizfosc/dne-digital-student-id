@@ -1,0 +1,39 @@
+# CodeRabbit Configuration
+# https://docs.coderabbit.ai/guides/configuration
+language: pt-BR
+
+reviews:
+  profile: balanced
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+
+  path_instructions:
+    - path: "src/**"
+      instructions: |
+        Focus on code quality, performance, and security.
+        Check for proper error handling and input validation.
+        Ensure React best practices are followed.
+
+    - path: "components/**"
+      instructions: |
+        Verify component accessibility (a11y).
+        Check for proper TypeScript typing of props.
+        Ensure components are reusable and well-structured.
+
+    - path: "**/*.test.*"
+      instructions: |
+        Ensure test coverage and edge cases.
+        Verify mock implementations are correct.
+
+    - path: "docs/**"
+      instructions: |
+        Check clarity and completeness of documentation.
+
+chat:
+  auto_reply: true
