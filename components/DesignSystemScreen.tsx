@@ -8,7 +8,7 @@ interface DesignSystemScreenProps {
 export const DesignSystemScreen: React.FC<DesignSystemScreenProps> = ({ onBack }) => {
     const [activeTab, setActiveTab] = useState<'colors' | 'typography' | 'spacing' | 'components'>('colors');
 
-    const ColorSwatch = ({ name, value }: { name: string; value: string }) => (
+    const ColorSwatch: React.FC<{ name: string; value: string }> = ({ name, value }) => (
         <div className="flex items-center space-x-3 mb-2">
             <div
                 className="w-12 h-12 rounded-lg shadow-md border border-gray-200"

@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase';
-import { Student } from '../types';
+import { Student } from '../../types';
 
 // Database row type (snake_case from Postgres)
 interface StudentRow {
